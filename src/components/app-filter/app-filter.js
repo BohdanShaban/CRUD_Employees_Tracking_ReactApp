@@ -1,0 +1,18 @@
+import './app-filter.css';
+
+const AppFilter = () => {
+  return (
+    <div className="btn-group">
+      <button className="btn btn-light" type="button">
+        All Employees
+      </button>
+      <button className="btn btn-outline-light" type="button">
+        For Promotion
+      </button>
+      <button className="btn btn-outline-light" type="button">
+        More Than 1000$ Sallary
+      </button>
+    </div>
+  )
+}
+export default AppFilter;
