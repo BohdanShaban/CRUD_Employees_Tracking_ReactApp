@@ -6,30 +6,35 @@ class EmployeesListItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      increase: false
+      increase: false,
+      liked: false
     }
   }
-
-  getPromoted = () => {
-    this.setState(state => ({
-      increase: !this.state.increase
+  getIncrease = () => {
+    this.setState(({ increase }) => ({
+      increase: !increase
+    }))
+  }
+  employeeLiked = () => {
+    this.setState(({ liked }) => ({
+      liked: !liked
     }))
   }
 
   render() {
-
     const { name, salary } = this.props;
-    const { increase } = this.state;
+    const { increase, liked } = this.state;
 
     let classNameStr = "list-group-item d-flex justify-content-between";
     if (increase) { classNameStr += " increase" }
+    if (liked) { classNameStr += " like" }
 
     return (
       <li className={classNameStr}>
-        <span className="list-group-item-label">{name}</span>
+        <span onClick={this.employeeLiked} className="list-group-item-label">{name}</span>
         <input type="text" className="list-group-item-input" defaultValue={salary + '$'} />
         <div className='d-flex justify-content-center align-items-center'>
-          <button onClick={this.getPromoted}
+          <button onClick={this.getIncrease}
             type="button"
             className="btn-cookie btn-sm ">
             <i className="fas fa-cookie"></i>
