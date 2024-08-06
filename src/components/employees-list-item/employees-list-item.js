@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import './employees-list-item.css';
 import { Component } from 'react';
+
+import './employees-list-item.css';
 
 class EmployeesListItem extends Component {
   constructor(props) {
@@ -10,12 +11,12 @@ class EmployeesListItem extends Component {
       liked: false
     }
   }
-  getIncrease = () => {
+  onGetIncrease = () => {
     this.setState(({ increase }) => ({
       increase: !increase
     }))
   }
-  employeeLiked = () => {
+  onEmployeeLiked = () => {
     this.setState(({ liked }) => ({
       liked: !liked
     }))
@@ -31,10 +32,10 @@ class EmployeesListItem extends Component {
 
     return (
       <li className={classNameStr}>
-        <span onClick={this.employeeLiked} className="list-group-item-label">{name}</span>
+        <span onClick={this.onEmployeeLiked} className="list-group-item-label">{name}</span>
         <input type="text" className="list-group-item-input" defaultValue={salary + '$'} />
         <div className='d-flex justify-content-center align-items-center'>
-          <button onClick={this.getIncrease}
+          <button onClick={this.onGetIncrease}
             type="button"
             className="btn-cookie btn-sm ">
             <i className="fas fa-cookie"></i>
