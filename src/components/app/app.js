@@ -12,16 +12,17 @@ class App extends Component {
     super(props);
     this.state = {
       data: [
-        { name: 'Brad Pit', salary: 800, increase: false, id: 1 },
-        { name: 'Angelina Jolie', salary: 3000, increase: true, id: 2 },
-        { name: 'Michael Jackson', salary: 5000, increase: false, id: 3 }
+        { name: 'Brad Pit', salary: 800, increased: false, liked: true, id: 1 },
+        { name: 'Angelina Jolie', salary: 3000, increased: true, liked: false, id: 2 },
+        { name: 'Michael Jackson', salary: 5000, increased: false, liked: false, id: 3 }
       ],
-
+      searchStr: '',
+      filterStr: 'allEmployessClicked'
     }
     this.maxId = 3;
   }
 
-  onEmployeeDeleate = (id) => {
+  onDeleate = (id) => {
     this.setState(({ data }) => {
       return {
         data: data.filter(item => item.id !== id)
@@ -29,28 +30,77 @@ class App extends Component {
     })
   }
   onItemAdd = (name, salary) => {
-    const newDataItem = { name: name, salary: salary, increase: false, id: ++this.maxId }
+    const newDataItem = { name: name, salary: salary, increased: false, liked: false, id: ++this.maxId }
 
     this.setState(({ data }) => {
       const newArr = [...data, newDataItem];
-      return {
-        data: newArr
-      }
+      return { data: newArr }
     });
+  }
+  onLiked = (id) => {
+    this.setState(({ data }) => {
+      const likedId = data.findIndex(item => item.id === id);
+      const oldItemCopy = data[likedId];
+      const newItem = { ...oldItemCopy, liked: !oldItemCopy.liked };
+      const newData = [...data.slice(0, likedId), newItem, ...data.slice(likedId + 1)]
+      return { data: newData }
+    })
+  }
+  onIncreased = (id) => {
+    this.setState(({ data }) => ({
+      data: data.map(item => {
+        if (item.id === id) {
+          return { ...item, increased: !item.increased };
+        }
+        return item;
+      })
+    }))
+  }
+  searchEmployee = (searchStr, dataArr) => {
+    if (searchStr.length === 0) return dataArr;
+
+    return dataArr.filter(item => {
+      return item.name.indexOf(searchStr) > -1;
+    })
+  }
+  onSearchByStr = (searchStr) => {
+    this.setState({ searchStr })
+  }
+  onFilterClicked = (filterStr) => {
+    this.setState({ filterStr })
+  }
+  filterEmployee = (filterStr, dataArr) => {
+    if (filterStr === "allEmployessClicked") {
+      return dataArr;
+    } else if (filterStr === "forPromotionClicked") {
+      return dataArr.filter(item => item.increased)
+    } else if (filterStr === "moreTan1000Clicked") {
+      return dataArr.filter(item => {
+        return item.salary > 1000;
+      })
+    } else return dataArr
+
   }
 
   render() {
+    const { data, searchStr, filterStr } = this.state;
+    let visibleData = this.searchEmployee(searchStr, data);
+    visibleData = this.filterEmployee(filterStr, visibleData);
 
     return (
       <div className="app">
-        <AppInfo />
+        <AppInfo increasedEmplNum={data.filter(item => item.increased === true).length}
+          enployeesNum={data.length} />
 
         <div className="search-panel">
-          <SearchPanel />
-          <AppFilter />
+          <SearchPanel onSearch={this.onSearchByStr} />
+          <AppFilter onClicked={this.onFilterClicked} />
         </div>
 
-        <EmployeesList onDeleate={this.onEmployeeDeleate} data={this.state.data} />
+        <EmployeesList onIncreased={this.onIncreased}
+          onLiked={this.onLiked}
+          onDeleate={this.onDeleate}
+          data={visibleData} />
 
         <EmployeesAddForm onItemAdd={this.onItemAdd} />
 
