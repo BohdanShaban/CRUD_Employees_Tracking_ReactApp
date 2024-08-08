@@ -70,16 +70,16 @@ class App extends Component {
     this.setState({ filterStr })
   }
   filterEmployee = (filterStr, dataArr) => {
-    if (filterStr === "allEmployessClicked") {
-      return dataArr;
-    } else if (filterStr === "forPromotionClicked") {
-      return dataArr.filter(item => item.increased)
-    } else if (filterStr === "moreTan1000Clicked") {
-      return dataArr.filter(item => {
-        return item.salary > 1000;
-      })
-    } else return dataArr
-
+    switch (filterStr) {
+      case 'allEmployessClicked':
+        return dataArr
+      case 'forPromotionClicked':
+        return dataArr.filter(item => item.increased)
+      case 'moreTan1000Clicked':
+        return dataArr.filter(item => item.salary > 1000)
+      default:
+        return dataArr
+    }
   }
 
   render() {

@@ -42,7 +42,7 @@ class AppFilter extends Component {
         </button>
         <button className={moreTan1000Clicked ? "btn btn-light" : "btn btn-outline-light"}
           onClick={this.onButtonClicked}
-          data-toggle="moreTan1000Clicked"
+          data-toggle=" "
           type="button">
           More Than 1000$ Sallary
         </button>
