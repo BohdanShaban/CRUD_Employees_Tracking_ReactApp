@@ -74,7 +74,7 @@ class App extends Component {
       case 'allEmployessClicked':
         return dataArr
       case 'forPromotionClicked':
-        return dataArr.filter(item => item.increased)
+        return dataArr.filter(item => item.increased) // if (item.increased) return item
       case 'moreTan1000Clicked':
         return dataArr.filter(item => item.salary > 1000)
       default:
@@ -94,7 +94,7 @@ class App extends Component {
 
         <div className="search-panel">
           <SearchPanel onSearch={this.onSearchByStr} />
-          <AppFilter onClicked={this.onFilterClicked} />
+          <AppFilter filterStr={filterStr} onClicked={this.onFilterClicked} />
         </div>
 
         <EmployeesList onIncreased={this.onIncreased}
